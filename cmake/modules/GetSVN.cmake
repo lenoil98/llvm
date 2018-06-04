@@ -76,6 +76,8 @@ macro(get_source_info_git path revision repository)
     if (git_result EQUAL 0)
       string(REGEX REPLACE "^(.*\n)?[^ \t]+[ \t]+([^ \t\n]+)[ \t]+\\(fetch\\).*"
         "\\2" git_url "${git_output}")
+      string(REGEX REPLACE "^([^@]*):[^@]*@"
+        "\\1:REDACTED@" git_url "${git_url}")
       set(${repository} "${git_url}" PARENT_SCOPE)
     endif()
   endif()
