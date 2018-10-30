@@ -108,6 +108,11 @@ template <typename T, bool IsPodLike> struct OptionalStorage {
   }
 };
 
+// Disable this, because it causes ABI issues if llvm is compiled with GCC and
+// we link it with a binary compiled with clang (or vice versa).
+// We disable this so that all the compilers always generate ABI compatible
+// code and layout for llvm::Optional
+#if 0
 #if !defined(__GNUC__) || defined(__clang__) // GCC up to GCC7 miscompiles this.
 /// Storage for trivially copyable types only.
 template <typename T> struct OptionalStorage<T, true> {
@@ -125,6 +130,7 @@ template <typename T> struct OptionalStorage<T, true> {
 
   void reset() { hasVal = false; }
 };
+#endif
 #endif
 } // namespace optional_detail
 
